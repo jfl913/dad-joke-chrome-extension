@@ -11,11 +11,16 @@
         <button @click="logJokes" class="btn"><icon name="list"></icon></button>
         <button @click="clearStorage" class="btn"><icon name="trash"></icon></button>
       </div>
+
+      <ul v-show="displayJokeList">
+        <li v-for="joke in favoriteJokeList">
+          {{ joke }}
+        </li>
+      </ul>
     </div>
   </div>
 </template>
-
-
+c
 <script>
 import axios from 'axios';
 
@@ -24,7 +29,9 @@ export default {
     return {
       loading: true,
       joke: "",
-      likeButtonDisabled: false
+      likeButtonDisabled: false,
+      favoriteJokeList: [],
+      displayJokeList: false
     }
   },
   methods: {
@@ -34,31 +41,42 @@ export default {
         res.jokes.push(this.joke);
         chrome.storage.local.set(res);
         this.likeButtonDisabled = true;
+        this.searchFavoriteJokeList();
       });
     },
     logJokes(){
       chrome.storage.local.get("jokes", (res) => {
         console.log(`chrome storage local: \n${JSON.stringify(res, null, 2)}`);
         if (res.jokes) {
-          console.log(`chrome storage local jokes: ${res.jokes}`);
+          res.jokes.map(joke => {
+            console.log(joke);
+          });
         }
-        if(res.jokes) res.jokes.map(joke => console.log(joke))
       });
+      this.displayJokeList = !this.displayJokeList;
     },
     clearStorage(){
       chrome.storage.local.clear();
+      this.searchFavoriteJokeList();
+    },
+    searchFavoriteJokeList() {
+      chrome.storage.local.get("jokes", (res) => {
+        this.favoriteJokeList = res.jokes;
+        console.log(`favoriteJokeList: ${this.favoriteJokeList}`);
+      });
     }
   },
   mounted() {
     axios.get(
-      "https://icanhazdadjoke.com/",
-      { 'headers': { 'Accept': 'application/json' } }
+            "https://icanhazdadjoke.com/",
+            { 'headers': { 'Accept': 'application/json' } }
     )
-      .then(res => {
-        console.log(`axios request response: \n${JSON.stringify(res, null, 2)}`);
-        this.joke = res.data.joke;
-        this.loading = false;
-      });
+            .then(res => {
+              console.log(`axios request response: \n${JSON.stringify(res, null, 2)}`);
+              this.joke = res.data.joke;
+              this.loading = false;
+            });
+    this.searchFavoriteJokeList();
   }
 }
 </script>
