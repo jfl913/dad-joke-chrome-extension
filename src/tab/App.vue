@@ -31,13 +31,17 @@ export default {
     likeJoke(){
       chrome.storage.local.get("jokes", (res) => {
         if(!res.jokes) res.jokes = [];
-        res.jokes.push(this.joke)
+        res.jokes.push(this.joke);
         chrome.storage.local.set(res);
         this.likeButtonDisabled = true;
       });
     },
     logJokes(){
       chrome.storage.local.get("jokes", (res) => {
+        console.log(`chrome storage local: \n${JSON.stringify(res, null, 2)}`);
+        if (res.jokes) {
+          console.log(`chrome storage local jokes: ${res.jokes}`);
+        }
         if(res.jokes) res.jokes.map(joke => console.log(joke))
       });
     },
@@ -51,7 +55,8 @@ export default {
       { 'headers': { 'Accept': 'application/json' } }
     )
       .then(res => {
-        this.joke = res.data.joke
+        console.log(`axios request response: \n${JSON.stringify(res, null, 2)}`);
+        this.joke = res.data.joke;
         this.loading = false;
       });
   }
