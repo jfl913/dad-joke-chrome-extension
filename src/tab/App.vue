@@ -12,7 +12,7 @@
         <button @click="clearStorage" class="btn"><icon name="trash"></icon></button>
       </div>
 
-      <ul v-show="displayJokeList">
+      <ul v-show="displayJokeList" class="list">
         <li v-for="joke in favoriteJokeList">
           {{ joke }}
         </li>
@@ -84,19 +84,27 @@ export default {
 <style>
 body {
   height: 98vh;
-  text-align: center;
+  text-align: left;
   color: #353638;
   font-size: 22px;
   line-height: 30px;
   font-family: Merriweather,Georgia,serif;
-  background: url("https://dab1nmslvvntp.cloudfront.net/wp-content/uploads/2018/12/1544189726troll-dad.png") no-repeat 1% 99%;
+  background: url("https://dab1nmslvvntp.cloudfront.net/wp-content/uploads/2018/12/1544189726troll-dad.png") no-repeat 1% 1%;
   background-size: 200px;
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
 }
 
+/*.list {*/
+/*  display: flex;*/
+/*  flex-direction: column;*/
+/*  */
+/*}*/
+
 .joke {
+  text-align: center;
   max-width: 800px;
 }
 
