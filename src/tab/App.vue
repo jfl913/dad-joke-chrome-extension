@@ -3,7 +3,8 @@
     <div v-if="loading" class="centered">
       <p>Loading...</p>
     </div>
-    <div v-else>
+    <div class="content" v-else>
+      <h1>今日笑话</h1>
       <p class="joke">{{ joke }}</p>
 
       <div class="button-container">
@@ -12,11 +13,14 @@
         <button @click="clearStorage" class="btn"><icon name="trash"></icon></button>
       </div>
 
-      <ul v-show="displayJokeList" class="list">
-        <li v-for="joke in favoriteJokeList">
-          {{ joke }}
-        </li>
-      </ul>
+      <div class="list" v-show="displayJokeList">
+        <h2>收藏列表</h2>
+        <ul>
+          <li v-for="joke in favoriteJokeList">
+            {{ joke }}
+          </li>
+        </ul>
+      </div>
     </div>
   </div>
 </template>
@@ -86,7 +90,6 @@ body {
   height: 98vh;
   text-align: left;
   color: #353638;
-  font-size: 22px;
   line-height: 30px;
   font-family: Merriweather,Georgia,serif;
   background: url("https://dab1nmslvvntp.cloudfront.net/wp-content/uploads/2018/12/1544189726troll-dad.png") no-repeat 1% 1%;
@@ -94,18 +97,34 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-start;
 }
 
-/*.list {*/
-/*  display: flex;*/
-/*  flex-direction: column;*/
-/*  */
-/*}*/
+.content {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  height: 98vh;
+  margin: 0 auto;
+}
 
-.joke {
-  text-align: center;
-  max-width: 800px;
+h1 {
+  color: #333333;
+}
+
+p {
+  font-size: 20px;
+  color: #797979;
+  padding: 5px 0;
+}
+
+.list {
+  font-size: 15px;
+  background: #797979;
+  padding: 10px;
+  border-radius: 5px;
+  color: white;
+  line-height: 2;
 }
 
 .button-container {
